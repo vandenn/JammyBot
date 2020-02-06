@@ -25,10 +25,13 @@ bot.on('ready', function (evt) {
   logger.info(bot.username + ' - (' + bot.id + ')');
 });
 
-bot.on('message', function (user, userID, channelID, message, evt) {
+var weather = require('./logic/weather.js');
+
+bot.on('message', async function (user, userID, channelID, message, evt) {
   var words = message.split(' ');
   var saidBye = false;
   var wasJammyCalled = false;
+  var wasWeatherAsked = false;
   var previousWord = "";
   words.forEach(word => {
     var preprocessedWord = word.toLowerCase().replace(/\W/g, '');
@@ -38,13 +41,20 @@ bot.on('message', function (user, userID, channelID, message, evt) {
     if (preprocessedWord === "bye" || preprocessedWord === "goodbye") {
       saidBye = true;
     }
+    if (preprocessedWord === "weather") {
+      wasWeatherAsked = true;
+    }
     previousWord = preprocessedWord;
   });
 
   var message = "";
+
   if (wasJammyCalled) {
     message = "Wanna fight, punk?!";
-    if (saidBye) {
+    if (wasWeatherAsked) {
+      message = await weather.getWeatherMessage();
+    }
+    else if (saidBye) {
       message = "Fine. Whatever! Just go!";
     }
   }
