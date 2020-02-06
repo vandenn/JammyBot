@@ -1,4 +1,7 @@
-require('dotenv').config();
+const environment = process.env.NODE_ENV || "development";
+if (environment === "development") {
+  require('dotenv').config();
+}
 var Discord = require('discord.io');
 var logger = require('winston');
 // Configure logger settings
