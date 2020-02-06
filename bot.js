@@ -31,7 +31,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
   var wasJammyCalled = false;
   var previousWord = "";
   words.forEach(word => {
-    var preprocessedWord = word.toLowerCase();
+    var preprocessedWord = word.toLowerCase().replace(/\W/g, '');
     if (/j[a-z]*l[a-z]*[ai]/i.test(preprocessedWord) && previousWord !== "real") {
       wasJammyCalled = true;
     }
