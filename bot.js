@@ -18,6 +18,7 @@ bot.on('ready', function (evt) {
   logger.info(bot.username + ' - (' + bot.id + ')');
 });
 
+var preprocessor = require('./preprocessor.js');
 var weather = require('./logic/weather.js');
 
 bot.on('message', async function (user, userID, channelID, message, evt) {
@@ -27,7 +28,7 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
   var wasWeatherAsked = false;
   var previousWord = "";
   words.forEach(word => {
-    var preprocessedWord = word.toLowerCase().replace(/\W/g, '');
+    var preprocessedWord = preprocessor.preprocess(word);
     if (/j[a-z]*l[a-z]*[ai]/i.test(preprocessedWord) && previousWord !== "real") {
       wasJammyCalled = true;
     }
