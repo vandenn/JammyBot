@@ -22,14 +22,16 @@ bot.on('ready', function (evt) {
 });
 bot.on('message', function (user, userID, channelID, message, evt) {
   var words = message.split(' ');
-  words.every(word => {
-    if (/j[a-z]*l[a-z]*[ai]/i.test(word)) {
-      bot.sendMessage({
-        to: channelID,
-        message: "Wanna fight, punk?!"
-      });
-      return false;
+  var wasJammyCalled = false;
+  words.forEach(word => {
+    if (/j[a-z]*l[a-z]*[ai]/i.test(word.toLowerCase())) {
+      wasJammyCalled = true;
     }
-    return true;
-  })
+  });
+  if (wasJammyCalled) {
+    bot.sendMessage({
+      to: channelID,
+      message: "Wanna fight, punk?!"
+    });
+  }
 });
