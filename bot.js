@@ -18,49 +18,15 @@ bot.on('ready', function (evt) {
   logger.info(bot.username + ' - (' + bot.id + ')');
 });
 
-var preprocessor = require('./preprocessor.js');
-var weather = require('./logic/weather.js');
+var main = require('./logic/main.js');
 
 bot.on('message', async function (user, userID, channelID, message, evt) {
-  var words = message.split(' ');
-  var saidBye = false;
-  var wasJammyCalled = false;
-  var wasWeatherAsked = false;
-  var previousWord = "";
-  words.forEach(word => {
-    var preprocessedWord = preprocessor.preprocess(word);
-    if (/j[a-z]*l[a-z]*[ai]/i.test(preprocessedWord) && previousWord !== "real") {
-      wasJammyCalled = true;
-    }
-    if (preprocessedWord === "bye" || preprocessedWord === "goodbye") {
-      saidBye = true;
-    }
-    if (preprocessedWord === "weather") {
-      wasWeatherAsked = true;
-    }
-    previousWord = preprocessedWord;
-  });
+  var responses = await main(message);
 
-  var response = "";
-
-  if (wasJammyCalled) {
-    response = "Wanna fight, punk?!";
-    if (wasWeatherAsked) {
-      let city = undefined;
-      let matches = message.toLowerCase().match(/weather in ([A-z]+)/i);
-      if (matches != null)
-        city = matches[1];
-      response = await weather.getWeatherMessage(city);
-    }
-    else if (saidBye) {
-      response = "Fine. Whatever! Just go!";
-    }
-  }
-
-  if (message.length > 0) {
+  responses.forEach(response => {
     bot.sendMessage({
       to: channelID,
       message: response
     });
-  }
+  })
 });

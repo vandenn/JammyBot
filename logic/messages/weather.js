@@ -1,8 +1,18 @@
 const axios = require('axios');
-const logger = require('../logger.js');
+const logger = require('../../logger.js');
+const preprocessor = require('../preprocessor.js');
 
-exports.getWeatherMessage = async (city = 'taiwan') => {
-  logger.info(`City: ${city}`);
+exports.getWeatherMessage = async text => {
+  text = preprocessor.removeNonAlphanumeric(text);
+  if (!text.includes("weather"))
+    return "";
+
+  let city = undefined;
+  let matches = text.match(/weather in ([A-z]+)/i);
+  if (matches != null)
+    city = matches[1];
+  city = city || 'taiwan';
+
   let apiKey = process.env.WEATHER_API_KEY;
   let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
 
