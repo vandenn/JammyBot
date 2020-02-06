@@ -29,14 +29,16 @@ bot.on('message', function (user, userID, channelID, message, evt) {
   var words = message.split(' ');
   var saidBye = false;
   var wasJammyCalled = false;
+  var previousWord = "";
   words.forEach(word => {
-    var preprocessed_word = word.toLowerCase();
-    if (/j[a-z]*l[a-z]*[ai]/i.test(preprocessed_word)) {
+    var preprocessedWord = word.toLowerCase();
+    if (/j[a-z]*l[a-z]*[ai]/i.test(preprocessedWord) && previousWord !== "real") {
       wasJammyCalled = true;
     }
-    if (preprocessed_word === "bye" || preprocessed_word === "goodbye") {
+    if (preprocessedWord === "bye" || preprocessedWord === "goodbye") {
       saidBye = true;
     }
+    previousWord = preprocessedWord;
   });
 
   var message = "";
