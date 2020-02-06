@@ -4,6 +4,7 @@ const preprocessor = require('./preprocessor.js');
 const opinion = require('./messages/opinion.js');
 const howareyou = require('./messages/howareyou.js');
 const weather = require('./messages/weather.js');
+const thanks = require('./messages/thanks.js');
 const goodbye = require('./messages/goodbye.js');
 
 const DEFAULT_RESPONSE = "Wanna fight, punk?!";
@@ -18,6 +19,7 @@ module.exports = async text => {
   messages.push(opinion.getOpinionMessage(text));
   messages.push(howareyou.getHowAreYouMessage(text));
   messages.push(await weather.getWeatherMessage(text));
+  messages.push(thanks.getThanksMessage(text));
   messages.push(goodbye.getGoodbyeMessage(text));
 
   if (!messages.some(message => message) || messages.length <= 0) {
