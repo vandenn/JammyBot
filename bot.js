@@ -4,14 +4,7 @@ if (environment === "development") {
 }
 
 var Discord = require('discord.io');
-var logger = require('winston');
-
-// Configure logger settings
-logger.remove(logger.transports.Console);
-logger.add(new logger.transports.Console, {
-  colorize: true
-});
-logger.level = 'debug';
+var logger = require('./logger.js');
 
 // Initialize Discord Bot
 var bot = new Discord.Client({
@@ -47,22 +40,26 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
     previousWord = preprocessedWord;
   });
 
-  var message = "";
+  var response = "";
 
   if (wasJammyCalled) {
-    message = "Wanna fight, punk?!";
+    response = "Wanna fight, punk?!";
     if (wasWeatherAsked) {
-      message = await weather.getWeatherMessage();
+      let city = undefined;
+      let matches = message.toLowerCase().match(/weather in ([A-z]+)/i);
+      if (matches != null)
+        city = matches[1];
+      response = await weather.getWeatherMessage(city);
     }
     else if (saidBye) {
-      message = "Fine. Whatever! Just go!";
+      response = "Fine. Whatever! Just go!";
     }
   }
 
   if (message.length > 0) {
     bot.sendMessage({
       to: channelID,
-      message
+      message: response
     });
   }
 });
