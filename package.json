@@ -1,0 +1,11 @@
+{
+  "name": "jammy-bot",
+  "version": "0.1.0",
+  "description": "A simulation of Jammy's linguistic patterns and responses",
+  "main": "bot.js",
+  "author": "Vandenn",
+  "dependencies": {
+    "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
+    "winston": "^3.2.1"
+  }
+}
