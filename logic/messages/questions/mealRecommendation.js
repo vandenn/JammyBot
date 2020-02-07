@@ -3,19 +3,29 @@ const preprocessor = require('../../preprocessor.js');
 
 exports.getMealRecommendationMessage = text => {
   text = preprocessor.removeNonAlphanumeric(text);
-  matches = text.match(/what [A-z]+ i [A-z]+ for (breakfast[a-z]*|lunch[a-z]*|snack[a-z]*|dinner[a-z]*|drinks[a-z]*)/i);
-  if (!matches)
-    return "";
-  mealType = matches[1];
+  var mealType = "";
+  var matches = text.match(/what [A-z]+ i [A-z]+ for (breakfast[a-z]*|lunch[a-z]*|snack[a-z]*|dinner[a-z]*|drink[a-z]*)/i);
+  if (!matches) {
+    matches = text.match(/what [A-z]+ i (eat|drink)/i);
+    if (!matches)
+      return "";
+    else
+      if (matches[1] === "eat")
+        mealType = "snack"
+      else if (matches[1] === "drink")
+        mealType = "drink"
+  }
+  else
+    mealType = matches[1];
 
-  food = "nothing";
+  var food = "nothing";
   if (mealType.match(/breakfast[a-z]*/i))
     food = getBreakfastRecommendation();
   else if (mealType.match(/lunch[a-z]*/i) || mealType.match(/dinner[a-z]*/i))
     food = getHeavyMealRecommendation();
   else if (mealType.match(/snack[a-z]*/i))
     food = getSnackRecommendation();
-  else if (mealType.match(/drinks[a-z]*/i))
+  else if (mealType.match(/drink[a-z]*/i))
     food = getDrinksRecommendation();
 
   return `I dunno.. maybe ${food}?`;
