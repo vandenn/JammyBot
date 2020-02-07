@@ -4,6 +4,7 @@ const preprocessor = require('./preprocessor.js');
 const opinion = require('./messages/opinion.js');
 const chwazi = require('./messages/chwazi.js');
 const questions = require('./messages/questions/main.js');
+const advice = require('./messages/advice.js');
 const salutations = require('./messages/salutations/main.js');
 
 const DEFAULT_RESPONSE = "Wanna fight, punk?!";
@@ -18,6 +19,7 @@ module.exports = async text => {
   messages.push(opinion.getOpinionMessage(text));
   messages.push(chwazi.getChwaziMessage(text));
   messages.push(...(await questions.getMessages(text)));
+  messages.push(await advice.getAdviceMessage(text));
   messages.push(...(salutations.getMessages(text)));
 
   messages = messages.filter(message => message);
