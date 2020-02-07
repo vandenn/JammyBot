@@ -5,6 +5,7 @@ const opinion = require('./messages/opinion.js');
 const howAreYou = require('./messages/howAreYou.js');
 const eightball = require('./messages/eightball.js');
 const weather = require('./messages/weather.js');
+const time = require('./messages/time.js');
 const mealRecommendation = require('./messages/mealRecommendation.js');
 const thanks = require('./messages/thanks.js');
 const goodbye = require('./messages/goodbye.js');
@@ -22,6 +23,7 @@ module.exports = async text => {
   messages.push(howAreYou.getHowAreYouMessage(text));
   messages.push(eightball.getEightBallMessage(text));
   messages.push(await weather.getWeatherMessage(text));
+  messages.push(time.getTimeMessage(text));
   messages.push(mealRecommendation.getMealRecommendationMessage(text));
   messages.push(thanks.getThanksMessage(text));
   messages.push(goodbye.getGoodbyeMessage(text));
