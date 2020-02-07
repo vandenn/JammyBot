@@ -9,8 +9,10 @@ exports.getLoveMessage = text => {
       "Stop it!",
       "Stahp!"
     ];
-  } else if (text.match(/lo+ve me\b/)) {
+  } else if (text.match(/lo+ve (me|us)\b/)) {
     possibleResponses = ["No."];
+  } else if (text.match(/ha+te (me|us)\b/)) {
+    possibleResponses = ["Yes.", "Yeah, pretty much."];
   }
   return possibleResponses[Math.floor(Math.random() * possibleResponses.length)];
 }
