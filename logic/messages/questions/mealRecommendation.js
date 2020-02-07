@@ -1,5 +1,5 @@
-const logger = require('../../logger.js');
-const preprocessor = require('../preprocessor.js');
+const logger = require('../../../logger.js');
+const preprocessor = require('../../preprocessor.js');
 
 exports.getMealRecommendationMessage = text => {
   text = preprocessor.removeNonAlphanumeric(text);

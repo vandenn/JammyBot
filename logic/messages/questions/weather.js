@@ -1,6 +1,6 @@
 const axios = require('axios');
-const logger = require('../../logger.js');
-const preprocessor = require('../preprocessor.js');
+const logger = require('../../../logger.js');
+const preprocessor = require('../../preprocessor.js');
 
 exports.getWeatherMessage = async text => {
   text = preprocessor.removeNonAlphanumeric(text);

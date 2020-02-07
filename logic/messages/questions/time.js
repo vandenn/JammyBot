@@ -1,4 +1,4 @@
-const preprocessor = require('../preprocessor.js');
+const preprocessor = require('../../preprocessor.js');
 
 exports.getTimeMessage = text => {
   text = preprocessor.removeNonAlphanumeric(text);
