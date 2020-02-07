@@ -3,14 +3,14 @@ const mealRecommendation = require('./mealRecommendation.js');
 const time = require('./time.js');
 const eightball = require('./eightball.js');
 
-exports.getMessage = async text => {
-  var message = "";
-  if (message = await weather.getWeatherMessage(text))
-    return message;
-  else if (message = mealRecommendation.getMealRecommendationMessage(text))
-    return message;
-  else if (message = time.getTimeMessage(text))
-    return message;
+exports.getMessages = async text => {
+  var messages = [];
+  messages.push(await weather.getWeatherMessage(text));
+  messages.push(mealRecommendation.getMealRecommendationMessage(text));
+  messages.push(time.getTimeMessage(text));
+  messages = messages.filter(message => message);
+  if (messages.length > 0)
+    return messages;
   else
-    return eightball.getEightBallMessage(text);
+    return [eightball.getEightBallMessage(text)];
 }

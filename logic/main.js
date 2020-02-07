@@ -15,14 +15,13 @@ module.exports = async text => {
   // Messages should be pushed in order of priority.
   messages = [];
   messages.push(opinion.getOpinionMessage(text));
-  messages.push(await questions.getMessage(text));
-  messages.push(salutations.getMessage(text));
+  messages.push(...(await questions.getMessages(text)));
+  messages.push(...(salutations.getMessages(text)));
 
-  if (!messages.some(message => message) || messages.length <= 0) {
-    messages = [];
+  messages = messages.filter(message => message);
+  if (messages.length <= 0) {
     messages.push(DEFAULT_RESPONSE);
   }
-  messages = messages.filter(message => message);
   return messages;
 }
 
