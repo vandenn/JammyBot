@@ -3,7 +3,7 @@ const preprocessor = require('../../preprocessor.js');
 
 exports.getMealRecommendationMessage = text => {
   text = preprocessor.removeNonAlphanumeric(text);
-  matches = text.match(/what should i have for (breakfast[a-z]*|lunch[a-z]*|snack[a-z]*|dinner[a-z]*|drinks[a-z]*)/i);
+  matches = text.match(/what [A-z]+ i [A-z]+ for (breakfast[a-z]*|lunch[a-z]*|snack[a-z]*|dinner[a-z]*|drinks[a-z]*)/i);
   if (!matches)
     return "";
   mealType = matches[1];
