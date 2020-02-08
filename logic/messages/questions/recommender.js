@@ -3,8 +3,9 @@ const preprocessor = require('../../preprocessor.js');
 const constants = require('../../../constants/main.js');
 const mealRecommender = require('./recommendations/meal.js');
 const clothesRecommender = require('./recommendations/clothes.js');
+const gamesRecommender = require('./recommendations/games.js');
 
-exports.getRecommendationMessage = text => {
+exports.getRecommendationMessage = async text => {
   text = preprocessor.removeNonAlphanumeric(text);
   var questionTypeString = `(${constants.questionTypes.join('|')})`;
   var auxiliaryString = `(${constants.auxiliaries.join('|')})`;
@@ -24,6 +25,7 @@ exports.getRecommendationMessage = text => {
   var messages = [];
   messages.push(mealRecommender.getMealRecommendationMessage(type, object, action, details));
   messages.push(clothesRecommender.getClothesRecommendationMessage(type, object, action, details));
+  messages.push(await gamesRecommender.getGamesRecommendationMessage(type, object, action, details));
 
   messages = messages.filter(message => message);
   if (messages.length > 0)
