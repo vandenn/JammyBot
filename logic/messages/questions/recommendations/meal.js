@@ -12,7 +12,7 @@ exports.getMealRecommendationMessage = (type, object, action, details) => {
       } else {
         return getWhatRecommendationMessage(DEFAULT_MEAL_TYPE);
       }
-    } else if (action.match(/drink/i) || globalConstants.causatives.includes(action)) {
+    } else if (action.match(/drink/i)) {
       if (containsDrinkType(object)) {
         return getWhatRecommendationMessage(object);
       } else {
