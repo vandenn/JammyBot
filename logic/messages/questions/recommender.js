@@ -1,7 +1,7 @@
 const logger = require('../../../logger.js');
 const preprocessor = require('../../preprocessor.js');
 
-exports.getMealRecommendationMessage = text => {
+exports.getRecommendationMessage = text => {
   text = preprocessor.removeNonAlphanumeric(text);
   var mealType = "";
   var matches = text.match(/what [A-z]+ i [A-z]+ for (breakfast[a-z]*|lunch[a-z]*|snack[a-z]*|dinner[a-z]*|drink[a-z]*)/i);
