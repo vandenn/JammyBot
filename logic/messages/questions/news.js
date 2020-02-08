@@ -6,7 +6,7 @@ const preprocessor = require('../../preprocessor.js');
 // https://newsapi.org
 exports.getNewsMessage = async text => {
   text = preprocessor.removeNonAlphanumeric(text);
-  if (!text.match(/the[A-z ]* (news|headline)[A-z]*\b/i))
+  if (!text.match(/(news|headline)[A-z]*\b/i))
     return "";
 
   let country = undefined;
@@ -15,6 +15,7 @@ exports.getNewsMessage = async text => {
     country = matches[3];
   country = country || 'usa';
   let countryCode = await getCountryCode(country);
+  logger.info(countryCode);
 
   let url = `https://newsapi.org/v2/top-headlines?country=${countryCode}&apiKey=${process.env.NEWS_API_KEY}`;
 
@@ -27,7 +28,7 @@ exports.getNewsMessage = async text => {
     return `Oh lemme check one shekund.. there's one here that said "${selectedArticle.title}" or whatever. This is the link I got: ${selectedArticle.url}`;
   } catch (error) {
     logger.info(`Error: ${error.toString()}`);
-    return "Dunno.. my phone won't show me for some reason.";
+    return "Dunno.. can't find any.";
   }
 }
 
@@ -38,7 +39,6 @@ const getCountryCode = async country => {
     if (response.status === "404" || response.data.length <= 0)
       throw "No country found.";
     var countries = response.data;
-    countries.sort((a, b) => (a.callingCodes[0] > b.callingCodes[0]) ? 1 : -1);
     return countries[0].alpha2Code.toLowerCase();
   } catch (error) {
     return "";
