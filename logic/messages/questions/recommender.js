@@ -1,6 +1,6 @@
 const logger = require('../../../logger.js');
 const preprocessor = require('../../preprocessor.js');
-const constants = require('../../../constants/main.js');
+const constants = require('../../../constants/index.js');
 const mealRecommender = require('./recommendations/meal.js');
 const clothesRecommender = require('./recommendations/clothes.js');
 const gamesRecommender = require('./recommendations/games.js');
@@ -10,7 +10,7 @@ exports.getRecommendationMessage = async text => {
   var questionTypeString = `(${constants.questionTypes.join('|')})`;
   var auxiliaryString = `(${constants.auxiliaries.join('|')})`;
   var queryPattern = new RegExp(
-    `${questionTypeString}([A-z ]*) ${auxiliaryString} [A-z]+ ([A-z]+)(.*)`, "i"
+    `${questionTypeString}([A-z ]*) ${auxiliaryString} i ([A-z]+)(.*)`, "i"
   )
   var matches = text.match(queryPattern);
   if (!matches) {

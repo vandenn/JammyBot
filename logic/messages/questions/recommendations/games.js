@@ -1,6 +1,6 @@
 const axios = require('axios');
 const logger = require('../../../../logger.js');
-const globalConstants = require('../../../../constants/main.js');
+const globalConstants = require('../../../../constants/index.js');
 
 exports.getGamesRecommendationMessage = async (type, object, action, details) => {
   if (type.match(/what/i)) {

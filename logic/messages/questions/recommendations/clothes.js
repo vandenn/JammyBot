@@ -1,4 +1,4 @@
-const globalConstants = require('../../../../constants/main.js');
+const globalConstants = require('../../../../constants/index.js');
 const constants = require('./clothes.constants');
 
 exports.getClothesRecommendationMessage = (type, object, action, details) => {

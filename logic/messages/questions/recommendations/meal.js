@@ -1,4 +1,4 @@
-const globalConstants = require('../../../../constants/main.js');
+const globalConstants = require('../../../../constants/index.js');
 const constants = require('./meal.constants.js');
 
 const DEFAULT_MEAL_TYPE = "lunch";

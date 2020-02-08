@@ -1,3 +1,4 @@
+const features = require('./features.js');
 const weather = require('./weather.js');
 const news = require('./news.js');
 const recommender = require('./recommender.js');
@@ -6,6 +7,7 @@ const eightball = require('./eightball.js');
 
 exports.getMessages = async text => {
   var messages = [];
+  messages.push(features.getFeaturesMessage(text));
   messages.push(await weather.getWeatherMessage(text));
   messages.push(await news.getNewsMessage(text));
   messages.push(await recommender.getRecommendationMessage(text));
