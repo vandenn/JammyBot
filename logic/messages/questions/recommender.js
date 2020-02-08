@@ -1,64 +1,52 @@
 const logger = require('../../../logger.js');
 const preprocessor = require('../../preprocessor.js');
+const constants = require('./recommender.constants');
+const mealRecommender = require('./recommendations/meal.js');
 
 exports.getRecommendationMessage = text => {
   text = preprocessor.removeNonAlphanumeric(text);
-  var mealType = "";
-  var matches = text.match(/what [A-z]+ i [A-z]+ for (breakfast[a-z]*|lunch[a-z]*|snack[a-z]*|dinner[a-z]*|drink[a-z]*)/i);
+  var questionTypeString = `(${constants.questionTypes.join('|')})`;
+  var auxiliaryString = `(${constants.auxiliaries.join('|')})`;
+  var queryPattern = new RegExp(
+    `${questionTypeString}([A-z ]*) ${auxiliaryString} [A-z]+ ([A-z]+)(.*)`, "i"
+  )
+  var matches = text.match(queryPattern);
   if (!matches) {
-    matches = text.match(/what [A-z]+ i (eat|drink)/i);
-    if (!matches)
-      return "";
-    else
-      if (matches[1] === "eat")
-        mealType = "snack"
-      else if (matches[1] === "drink")
-        mealType = "drink"
+    return "";
   }
-  else
-    mealType = matches[1];
 
-  var food = "nothing";
-  if (mealType.match(/breakfast[a-z]*/i))
-    food = getBreakfastRecommendation();
-  else if (mealType.match(/lunch[a-z]*/i) || mealType.match(/dinner[a-z]*/i))
-    food = getHeavyMealRecommendation();
-  else if (mealType.match(/snack[a-z]*/i))
-    food = getSnackRecommendation();
-  else if (mealType.match(/drink[a-z]*/i))
-    food = getDrinksRecommendation();
+  var type = matches[1];
+  var object = matches[2];
+  var action = matches[4];
+  var details = matches[5];
 
-  return `I dunno.. maybe ${food}?`;
+  var messages = [];
+  messages.push(tryMatchMeal(type, object, action, details));
+
+  messages = messages.filter(message => message);
+  if (messages.length > 0)
+    return messages[0];
+  return "";
 }
 
-const getBreakfastRecommendation = () => {
-  var choices = [
-    "pancakes", "bacon", "toast", "longganisa", "pandesal", "hotdog", "sausage",
-    "champorado", "oatmeal", "cereals", "tapa", "omelette", "sunny-side up"
-  ]
-  return choices[Math.floor(Math.random() * choices.length)];
-}
-
-const getHeavyMealRecommendation = () => {
-  var choices = [
-    "sinigang", "nilaga", "fried chicken", "adobo", "afritada", "caldereta", "menudo",
-    "mechado", "pork chops", "stroganoff"
-  ]
-  return choices[Math.floor(Math.random() * choices.length)];
-}
-
-const getSnackRecommendation = () => {
-  var choices = [
-    "arroz caldo", "pancit canton", "pandesal", "a granola bar", "chocolate", "chips",
-    "leftovers", "hard-boiled eggs", "toast"
-  ]
-  return choices[Math.floor(Math.random() * choices.length)];
-}
-
-const getDrinksRecommendation = () => {
-  var choices = [
-    "water", "soda", "apple juice", "juice", "milk", "milk tea", "yakult", "tea", "coffee",
-    "cabarnet sauvignon"
-  ]
-  return choices[Math.floor(Math.random() * choices.length)];
-}
+const DEFAULT_MEAL_TYPE = "lunch";
+const tryMatchMeal = (type, object, action, details) => {
+  if (type.match(/what/i)) {
+    if (action.match(/eat/i) || constants.causatives.includes(action)) {
+      if (mealRecommender.doDetailsMatchThisModule(details)) {
+        return mealRecommender.getMealRecommendationMessage(details);
+      } else if (mealRecommender.doDetailsMatchThisModule(object)) {
+        return mealRecommender.getMealRecommendationMessage(object)
+      } else if (action.match(/eat/i)) {
+        return mealRecommender.getMealRecommendationMessage(DEFAULT_MEAL_TYPE);
+      }
+    } else if (action.match(/drink/i)) {
+      if (object.match(/alcohol/i)) {
+        return mealRecommender.getMealRecommendationMessage("alcohol");
+      } else {
+        return mealRecommender.getMealRecommendationMessage(action);
+      }
+    }
+  }
+  return "";
+};
