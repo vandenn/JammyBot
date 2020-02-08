@@ -1,6 +1,6 @@
 const logger = require('../../../logger.js');
 const preprocessor = require('../../preprocessor.js');
-const constants = require('./recommender.constants');
+const constants = require('../../../constants/main.js');
 const mealRecommender = require('./recommendations/meal.js');
 
 exports.getRecommendationMessage = text => {
@@ -21,32 +21,10 @@ exports.getRecommendationMessage = text => {
   var details = matches[5];
 
   var messages = [];
-  messages.push(tryMatchMeal(type, object, action, details));
+  messages.push(mealRecommender.getMealRecommendationMessage(type, object, action, details));
 
   messages = messages.filter(message => message);
   if (messages.length > 0)
     return messages[0];
   return "";
 }
-
-const DEFAULT_MEAL_TYPE = "lunch";
-const tryMatchMeal = (type, object, action, details) => {
-  if (type.match(/what/i)) {
-    if (action.match(/eat/i) || constants.causatives.includes(action)) {
-      if (mealRecommender.doDetailsMatchThisModule(details)) {
-        return mealRecommender.getMealRecommendationMessage(details);
-      } else if (mealRecommender.doDetailsMatchThisModule(object)) {
-        return mealRecommender.getMealRecommendationMessage(object)
-      } else if (action.match(/eat/i)) {
-        return mealRecommender.getMealRecommendationMessage(DEFAULT_MEAL_TYPE);
-      }
-    } else if (action.match(/drink/i)) {
-      if (object.match(/alcohol/i)) {
-        return mealRecommender.getMealRecommendationMessage("alcohol");
-      } else {
-        return mealRecommender.getMealRecommendationMessage(action);
-      }
-    }
-  }
-  return "";
-};

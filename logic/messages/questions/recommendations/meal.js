@@ -1,10 +1,43 @@
+const globalConstants = require('../../../../constants/main.js');
 const constants = require('./meal.constants.js');
 
-exports.doDetailsMatchThisModule = details => {
-  return details.match(/(breakfast|lunch|snack|dinner)/i);
+const DEFAULT_MEAL_TYPE = "lunch";
+exports.getMealRecommendationMessage = (type, object, action, details) => {
+  if (type.match(/what/i)) {
+    if (action.match(/eat/i)) {
+      if (containsMealType(details)) {
+        return getMealRecommendationMessage(details);
+      } else if (containsMealType(object)) {
+        return getMealRecommendationMessage(object)
+      } else {
+        return getMealRecommendationMessage(DEFAULT_MEAL_TYPE);
+      }
+    } else if (action.match(/drink/i) || globalConstants.causatives.includes(action)) {
+      if (containsDrinkType(object)) {
+        return getMealRecommendationMessage(object);
+      } else {
+        return getMealRecommendationMessage(action);
+      }
+    } else if (globalConstants.causatives.includes(action)) {
+      if (containsMealType(details)) {
+        return getMealRecommendationMessage(details);
+      } else if (containsMealType(object)) {
+        return getMealRecommendationMessage(object)
+      }
+    }
+  }
+  return "";
+};
+
+const containsDrinkType = details => {
+  return details.match(/(drink|alcohol)/i);
 }
 
-exports.getMealRecommendationMessage = details => {
+const containsMealType = details => {
+  return details.match(/(breakfast|lunch|snack|dinner|drink|alcohol)/i);
+}
+
+const getMealRecommendationMessage = details => {
   var food = "nothing";
   if (details.match(/breakfast[a-z]*/i))
     food = getBreakfastRecommendation();
