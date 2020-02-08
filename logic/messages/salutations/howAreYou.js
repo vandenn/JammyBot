@@ -2,7 +2,7 @@ const preprocessor = require('../../preprocessor.js');
 
 exports.getHowAreYouMessage = text => {
   text = preprocessor.removeNonAlphanumeric(text);
-  if (!text.match(/how are y(a|ou)\b/))
+  if (!text.match(/how (are|r) (u|ya|you)\b/))
     return "";
   possibleResponses = [
     "I'm fine.",
