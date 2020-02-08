@@ -15,7 +15,7 @@ client.on('ready', () => {
   logger.info(client.user.username + ' - (' + client.user.id + ')');
 });
 
-var main = require('./logic/main.js');
+var main = require('./logic');
 
 client.on('message', async message => {
   var responses = await main(message.content);

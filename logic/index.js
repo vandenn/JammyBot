@@ -3,10 +3,10 @@ const logger = require('../logger.js');
 const preprocessor = require('./preprocessor.js');
 const opinion = require('./messages/opinion.js');
 const chwazi = require('./messages/chwazi.js');
-const questions = require('./messages/questions/main.js');
+const questions = require('./messages/questions');
 const advice = require('./messages/advice.js');
 const joke = require('./messages/joke.js');
-const salutations = require('./messages/salutations/main.js');
+const salutations = require('./messages/salutations');
 
 const DEFAULT_RESPONSE = "Wanna fight, punk?!";
 
