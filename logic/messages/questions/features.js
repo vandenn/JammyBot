@@ -10,5 +10,10 @@ exports.getFeaturesMessage = text => {
   if (!text.match(pattern))
     return "";
   var selectedFeature = constants.features[Math.floor(Math.random() * constants.features.length)];
-  return `I can ${selectedFeature} I guess.`;
+  var possibleResponses = [
+    `I can ${selectedFeature} I guess.`,
+    `Dunno.. I can ${selectedFeature} or whatever.`,
+    `Uhh.. I can probably ${selectedFeature}.`
+  ]
+  return possibleResponses[Math.floor(Math.random() * possibleResponses.length)];
 }
