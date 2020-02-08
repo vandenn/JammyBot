@@ -6,23 +6,23 @@ exports.getMealRecommendationMessage = (type, object, action, details) => {
   if (type.match(/what/i)) {
     if (action.match(/eat/i)) {
       if (containsMealType(details)) {
-        return getMealRecommendationMessage(details);
+        return getWhatRecommendationMessage(details);
       } else if (containsMealType(object)) {
-        return getMealRecommendationMessage(object)
+        return getWhatRecommendationMessage(object)
       } else {
-        return getMealRecommendationMessage(DEFAULT_MEAL_TYPE);
+        return getWhatRecommendationMessage(DEFAULT_MEAL_TYPE);
       }
     } else if (action.match(/drink/i) || globalConstants.causatives.includes(action)) {
       if (containsDrinkType(object)) {
-        return getMealRecommendationMessage(object);
+        return getWhatRecommendationMessage(object);
       } else {
-        return getMealRecommendationMessage(action);
+        return getWhatRecommendationMessage(action);
       }
     } else if (globalConstants.causatives.includes(action)) {
       if (containsMealType(details)) {
-        return getMealRecommendationMessage(details);
+        return getWhatRecommendationMessage(details);
       } else if (containsMealType(object)) {
-        return getMealRecommendationMessage(object)
+        return getWhatRecommendationMessage(object)
       }
     }
   }
@@ -37,7 +37,7 @@ const containsMealType = details => {
   return details.match(/(breakfast|lunch|snack|dinner|drink|alcohol)/i);
 }
 
-const getMealRecommendationMessage = details => {
+const getWhatRecommendationMessage = details => {
   var food = "nothing";
   if (details.match(/breakfast[a-z]*/i))
     food = getBreakfastRecommendation();

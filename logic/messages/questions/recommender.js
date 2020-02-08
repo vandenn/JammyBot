@@ -2,6 +2,7 @@ const logger = require('../../../logger.js');
 const preprocessor = require('../../preprocessor.js');
 const constants = require('../../../constants/main.js');
 const mealRecommender = require('./recommendations/meal.js');
+const clothesRecommender = require('./recommendations/clothes.js');
 
 exports.getRecommendationMessage = text => {
   text = preprocessor.removeNonAlphanumeric(text);
@@ -22,6 +23,7 @@ exports.getRecommendationMessage = text => {
 
   var messages = [];
   messages.push(mealRecommender.getMealRecommendationMessage(type, object, action, details));
+  messages.push(clothesRecommender.getClothesRecommendationMessage(type, object, action, details));
 
   messages = messages.filter(message => message);
   if (messages.length > 0)
