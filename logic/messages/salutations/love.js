@@ -3,7 +3,7 @@ const preprocessor = require('../../preprocessor.js');
 exports.getLoveMessage = text => {
   text = preprocessor.removeNonAlphanumeric(text);
   possibleResponses = [""];
-  if (text.match(/lo+ve you\b/)) {
+  if (text.match(/lo+ve (u|ya|you)\b/)) {
     possibleResponses = [
       "Stooooop.",
       "Stop it!",
