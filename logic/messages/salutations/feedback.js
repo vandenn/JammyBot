@@ -10,7 +10,9 @@ exports.getFeedbackMessage = text => {
       "Nye nye bAD jOb nyeh.",
       "Whatever. WHAT eh ver.",
       "Jeez.. what did I do to deserve this?",
-      "I'm literally offended right now. NGL, not gonna lie."
+      "I'm literally offended right now. NGL, not gonna lie.",
+      "Crying.",
+      "Shaddup, okay, shaddup!"
     ]
     return possibleResponses[Math.floor(Math.random() * possibleResponses.length)];
   }
