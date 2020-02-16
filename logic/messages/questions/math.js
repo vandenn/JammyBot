@@ -4,9 +4,10 @@ exports.getMathMessage = text => {
   if (!matches) return '';
 
   var result = Math.floor(Math.random() * 1000);
-  if (Math.random() >= 0.5) {
+  if (Math.random() >= 0.1) {
     result = eval(matches[0]);
   }
+  result = Math.round(result * 100) / 100;
 
   possibleResponses = [
     `Ugh.. math.. is it like ${result} or whatever?`,
